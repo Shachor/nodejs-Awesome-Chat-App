@@ -1,6 +1,7 @@
 // REQUIRE PACKAGES
 const express = require('express');
-
+const socketIO = require('socket.io');
+const http = require('http');
 
 // REQUIRE OBJECTS
 
@@ -8,6 +9,8 @@ const express = require('express');
 
 // SETUP EXPRESS APP
 var app = express();
+var server = http.createServer(app);
+var io = socketIO(server);    // this passes back our web sockets server
 
 
 // SETUP PATHING VARIABLE FOR PUBLIC DIR
@@ -21,6 +24,17 @@ const port = process.env.PORT || 3000;
 
 
 
+// This lets us listen for a new connection (like a new user connecting)
+io.on('connection', (socket) => {
+   console.log('New User connected.');
+
+   socket.on('disconnect', () => {
+      console.log('Homie left, yo.');
+   });
+});
+
+
+
 
 
 
@@ -30,6 +44,6 @@ const port = process.env.PORT || 3000;
 
 
 // START EXPRESS LISTENER
-app.listen(port, () => {
+server.listen(port, () => {   // this actually calls http.createServer(app)
    console.log(`Listening on port: ${port}`);
 });
