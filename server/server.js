@@ -42,19 +42,22 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
    //    console.log('Create Email: ', newEmail);
    // });
 
-   socket.emit('newMessage', {
-      from: 'Leroy',
-      text: 'Jesse is Gay',
-      createdAt: 1700
-   });
+   // socket.emit('newMessage', {      //socket.emit will send to specific connection
+   //    from: 'Leroy',
+   //    text: 'Jesse is Gay',
+   //    createdAt: 1700
+   // });
 
    socket.on('createMessage', (message) => {
       console.log('New Message:', message);
+      io.emit('newMessage', {       // io.emit will broadcast to ALL connected clients
+         from: message.from,
+         text: message.text,
+         createdAt: new Date().getTime(),
+      });
    });
 
-//who
-//text
-//createdAt       console.log(it);
+
 
    socket.on('disconnect', () => {     // Fires off anytime a web browser(client) leaves the server (closes)
       console.log('Homie left, yo.');

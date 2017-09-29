@@ -14,10 +14,10 @@ socket.on('connect', function() {     // Will fire off anytime we crete a connec
 //       text: 'Name the time and place, and wear something sexy.'
 //    });
 
-   socket.emit('createMessage', {
-      from: 'Jesse',
-      text: 'You know it!'
-   });
+   // socket.emit('createMessage', {
+   //    from: 'Jesse',
+   //    text: 'You know it!'
+   // });
 });
 
 socket.on('disconnect', function() {  // Fires off anytime the server goes down
