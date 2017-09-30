@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 
 // REQUIRE OBJECTS
-
+const {generateMessage} = require('./utils/message');
 
 
 // SETUP EXPRESS APP
@@ -48,28 +48,34 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
    //    createdAt: 1700
    // });
 
+
+//=============================================================================
    // Welcome the new user to the Chat App
-   socket.emit('newMessage', {
-      from: 'Admin',
-      text: 'Welcome to the Chat App',
-      createdAt: new Date().getTime(),
-   });
+   // OLD AND BUSTED
+   // socket.emit('newMessage', {
+   //    from: 'Admin',
+   //    text: 'Welcome to the Chat App',
+   //    createdAt: new Date().getTime(),
+   // });
+
+   //NEW HOTNESS
+   socket.emit('newMessage', generateMessage('Admin', 'Welcome to the Chat App'));
+
 
    // Inform all other users that a new user has joined
-   socket.broadcast.emit('newMessage', {
-      from: 'Admin',
-      text: 'New User joined!',
-      createdAt: new Date().getTime(),
-   });
+   socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User joined.'));
+
 
 
    socket.on('createMessage', (message) => {
       console.log('New Message:', message);
-      io.emit('newMessage', {       // io.emit will broadcast to ALL connected clients
-         from: message.from,
-         text: message.text,
-         createdAt: new Date().getTime(),
-      });
+      io.emit('newMessage', generateMessage(message.from, message.text));
+      
+      //                      {       // io.emit will broadcast to ALL connected clients
+      //    from: message.from,
+      //    text: message.text,
+      //    createdAt: new Date().getTime(),
+      // });
 
       // // This will fire off an emit to everyone BUT the person who called the 'createMessage'
       // socket.broadcast.emit('newMessage', {
