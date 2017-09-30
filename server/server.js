@@ -67,10 +67,19 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
 
 
 
-   socket.on('createMessage', (message) => {
+   socket.on('createMessage', (message, callback) => {
       console.log('New Message:', message);
       io.emit('newMessage', generateMessage(message.from, message.text));
-      
+
+      // This callback sends a response back to the emitter who called createMessage (Message received)
+      // We can send data back to the emitter in the callback
+      callback('This is from the server');
+
+   // THIS IS EMITTER WITHOUT EVENT ACKNOWLEDGE
+   // socket.on('createMessage', (message) => {
+   //    console.log('New Message:', message);
+   //    io.emit('newMessage', generateMessage(message.from, message.text));
+
       //                      {       // io.emit will broadcast to ALL connected clients
       //    from: message.from,
       //    text: message.text,
