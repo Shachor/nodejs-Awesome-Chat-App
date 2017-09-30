@@ -48,6 +48,21 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
    //    createdAt: 1700
    // });
 
+   // Welcome the new user to the Chat App
+   socket.emit('newMessage', {
+      from: 'Admin',
+      text: 'Welcome to the Chat App',
+      createdAt: new Date().getTime(),
+   });
+
+   // Inform all other users that a new user has joined
+   socket.broadcast.emit('newMessage', {
+      from: 'Admin',
+      text: 'New User joined!',
+      createdAt: new Date().getTime(),
+   });
+
+
    socket.on('createMessage', (message) => {
       console.log('New Message:', message);
       io.emit('newMessage', {       // io.emit will broadcast to ALL connected clients
@@ -55,6 +70,13 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
          text: message.text,
          createdAt: new Date().getTime(),
       });
+
+      // // This will fire off an emit to everyone BUT the person who called the 'createMessage'
+      // socket.broadcast.emit('newMessage', {
+      //    from: message.from,
+      //    text: message.text,
+      //    createdAt: new Date().getTime(),
+      // });
    });
 
 

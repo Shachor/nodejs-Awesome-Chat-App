@@ -31,3 +31,14 @@ socket.on('disconnect', function() {  // Fires off anytime the server goes down
 socket.on('newMessage', function(message) {
    console.log(message);
 });
+
+
+// INSTEAD of creating new sockets for each emit, we send the welcome and
+// newUser to newMessage
+// socket.on('welcome', function(message) {
+//    console.log(message);
+// });
+//
+// socket.on('newUser', function(message) {
+//    console.log(message);
+// });
