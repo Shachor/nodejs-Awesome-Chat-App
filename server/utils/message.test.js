@@ -2,12 +2,12 @@
 const expect = require('expect');
 
 // REQUIRE OBJECTS
-var {generateMessage} = require('./message');
+var {generateMessage, generateLocationMessage} = require('./message');
 
 
 
 //=============================================================================
-// TEST GENERATE MESSAGE
+// TEST generateMessage
 //=============================================================================
 describe('Generate Message', () => {
    it('should generate correct message object', () => {
@@ -30,6 +30,33 @@ describe('Generate Message', () => {
       // assert createdAt is number
    });
 });
+//=============================================================================
+
+
+
+//=============================================================================
+// TEST generateLocationMessage
+//=============================================================================
+describe('Generate Location Message', () => {
+   it('should generate correct location object', () => {
+      var from = 'Me';
+      var lat = 1;
+      var long = 1;
+
+      var result = generateLocationMessage(from, lat, long);
+
+      expect(result).toMatchObject({
+         from,
+         url: 'https://www.google.com/maps?q=1,1'
+      });
+      expect(typeof result.createdAt).toBe('number');
+   });
+});
+
+
+
+
+
 
 
 //=============================================================================

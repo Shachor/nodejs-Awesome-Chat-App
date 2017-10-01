@@ -4,7 +4,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 
 // REQUIRE OBJECTS
-const {generateMessage} = require('./utils/message');
+const {generateMessage, generateLocationMessage} = require('./utils/message');
 
 
 // SETUP EXPRESS APP
@@ -94,6 +94,9 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
       // });
    });
 
+   socket.on('createLocationMessage', (coords) => {
+      io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+   });
 
 
    socket.on('disconnect', () => {     // Fires off anytime a web browser(client) leaves the server (closes)

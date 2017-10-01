@@ -2,6 +2,7 @@
 // VAR DECLARATION
 //=============================================================================
 var socket = io();    // This initiates a call to the server from the client to keep a connection open
+var locationButton = jQuery('#send-location');
 
 
 
@@ -30,13 +31,17 @@ socket.on('newMessage', function(message) {
    jQuery('#messages').append(li);  // appends a new message to the end of the list as new <li>
 });
 
+// CLIENT LISTENER FOR GEOLOCATION MESSAGES
+// The reason we use separate vars instead of template strings is to prevent malicious code from executing
+socket.on('newLocationMessage', function(message) {
+   var li = jQuery('<li></li>');
+   var a = jQuery('<a target="_blank">My Current Location</a>');  //target="_blank" opens a new window
 
-// INSTEAD of creating new sockets for each emit, we send the welcome and
-// newUser to newMessage
-// socket.on('welcome', function(message) {
-//    console.log(message);
-// });
-
+   li.text(`${message.from}: `);
+   a.attr('href', message.url);  //.attr() - one arg means GET, two args is NAME of attr and SET attr
+   li.append(a);     // after we set the <a> attribute, we send it to the <li>
+   jQuery('#messages').append(li);     // now we send the <li> to the screen
+});
 
 
 //=============================================================================
@@ -58,7 +63,20 @@ jQuery('#message-form').on('submit', function (e) {
 });
 
 
+locationButton.on('click', function() {
+   if(!navigator.geolocation) {
+      return alert('Your browser does not support Geolocation.');
+   }
 
+   navigator.geolocation.getCurrentPosition(function(position) {
+      socket.emit('createLocationMessage', {
+         latitude: position.coords.latitude,
+         longitude: position.coords.longitude
+      });
+   }, function() {
+      alert('Unable to fetch location.');
+   });
+});
 
 
 
