@@ -53,12 +53,13 @@ jQuery('#message-form').on('submit', function (e) {
    // We need to prevent the default behavior for form (which is refresh page and send text to url)
    e.preventDefault();
 
+   var messageTextbox = jQuery('[name=message]');
    // Now we apply our own custom behavior to the forms SUBMIT event
    socket.emit('createMessage', {
       from: 'User',
-      text: jQuery('[name=message]').val()
+      text: messageTextbox.val(),
    }, function() {
-
+      messageTextbox.val('');
    });
 });
 
@@ -68,12 +69,16 @@ locationButton.on('click', function() {
       return alert('Your browser does not support Geolocation.');
    }
 
+   locationButton.attr('disabled', 'disabled').text('Sending Location...');    // This disables the location button after it's clicked
+
    navigator.geolocation.getCurrentPosition(function(position) {
+      locationButton.removeAttr('disabled').text('Share Your Location');       // After we get the location, we re-enable the button
       socket.emit('createLocationMessage', {
          latitude: position.coords.latitude,
          longitude: position.coords.longitude
       });
    }, function() {
+      locationButton.removeAttr('disabled').text('Share Your Location');       // If we fail, we still re-enable to button gor another try
       alert('Unable to fetch location.');
    });
 });
