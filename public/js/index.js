@@ -7,6 +7,28 @@ var locationButton = jQuery('#send-location');
 
 
 //=============================================================================
+// FUNTION DECLARATION
+//=============================================================================
+function scrollToBottom () {
+   // This is the AutoScroll function
+   // selectors
+   var messages = jQuery('#messages');    // selector for messages pane
+   var newMessage = messages.children('li:last-child');  // this calls the last <li> in the messages pane
+   //heights
+   var clientHeight = messages.prop('clientHeight');   //prop is a jQuery method to get object properties
+   var scrollTop = messages.prop('scrollTop');
+   var scrollHeight = messages.prop('scrollHeight');
+   var newMessageHeight = newMessage.innerHeight();     // will give us height of new message including css padding
+   var lastMessageHeight = newMessage.prev().innerHeight();  // gives us next to last <li> height
+
+   if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+      messages.scrollTop(scrollHeight);
+   }
+}
+
+
+
+//=============================================================================
 // CONNECTION SOCKETS
 //=============================================================================
 socket.on('connect', function() {     // Will fire off anytime we crete a connection to the server
@@ -31,6 +53,7 @@ socket.on('newMessage', function(message) {
       createdAt
    });
    jQuery('#messages').append(html);   // Appends the template to the messages list
+   scrollToBottom();
 
    //OLD AND BUSTED way of pushing out html - through jQuery manipulation
    // var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -53,6 +76,7 @@ socket.on('newLocationMessage', function(message) {
       createdAt
    });
    jQuery('#messages').append(html);
+   scrollToBottom();
 
    // var formattedTime = moment(message.createdAt).format('h:mm a');
    // var li = jQuery('<li></li>');
@@ -69,6 +93,7 @@ socket.on('newLocationMessage', function(message) {
 // CLIENT EMITTERS
 //=============================================================================
 // This is setting up the event listener for the message form on index.html
+// (The box the user types his message into)
 // The (e) stands for EVENT
 jQuery('#message-form').on('submit', function (e) {
    // We need to prevent the default behavior for form (which is refresh page and send text to url)
