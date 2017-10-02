@@ -2,73 +2,31 @@
 <html>
    <head>
       <meta charset="utf-8">
-      <title>Node Chat App</title>
+      <meta name="viewport" content="width=device-width, intial-scale=1, user-scalable=no">
+      <title>Join | Chat App</title>
 
       <link rel="stylesheet" href="/css/styles.css">
    </head>
-   <body class="chat">
+   <body class="centered-form">
 
-      <div class="chat__sidebar">
-         <h3>Users</h3>
-         <div id="users"></div>
+      <div class="centered-form__form">
+         <form action="/chat.html">
+            <div class="form-field">
+               <h3>Join a Chat</h3>
+            </div>
+            <div class="form-field">
+               <label>Display name</label>
+               <input type="text" name="name" autofocus/>
+            </div>
+            <div class="form-field">
+               <label>Room name</label>
+               <input type="text" name="room"/>
+            </div>
+            <div class="form-field">
+               <button>Join</button>
+            </div>
+         </form>
       </div>
-
-      <div class="chat__main">
-         <ol id="messages" class="chat__messages"></ol>
-
-         <div class="chat__footer">
-            <form id="message-form">
-               <input name="message" type="text" placeholder="Message" autofocus autocomplete="off" />
-               <button type="button" name="button">Send</button>
-            </form>
-
-            <button type="button" name="button" id="send-location">Share Your Location</button>
-         </div>
-
-      </div>
-
-
-      <!-- =============================================================== -->
-      <!-- MUSTACHE TEMPLATE for MESSAGE BLOCK                             -->
-      <!-- =============================================================== -->
-      <!-- This whole code block can be reusable -->
-      <script type="text/template" id="message-template">
-         <li class="message">
-            <div class="message__title">
-               <h4>{{from}}</h4>
-               <span>{{createdAt}}</span>
-            </div>
-            <div>
-               <p>{{text}}</p>
-            </div>
-         </li>
-      </script>
-      <!-- =============================================================== -->
-
-      <!-- =============================================================== -->
-      <!-- MUSTACHE TEMPLATE for LOCATION BLOCK                             -->
-      <!-- =============================================================== -->
-      <!-- This whole code block can be reusable -->
-      <script type="text/template" id="location-message-template">
-         <li class="message">
-            <div class="message__title">
-               <h4>{{from}}</h4>
-               <span>{{createdAt}}</span>
-            </div>
-            <div>
-               <p>
-                  <a href="{{url}}" target="_blank">My Current Location</a>
-               </p>
-            </div>
-         </li>
-      </script>
-      <!-- =============================================================== -->
-
-      <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-      <script type="text/javascript" src="/js/libs/jquery-3.2.1.js"></script>
-      <script type="text/javascript" src="/js/libs/moment.js"></script>
-      <script type="text/javascript" src="/js/libs/mustache.js"></script>
-      <script type="text/javascript" src="/js/index.js"></script>
 
    </body>
 </html>
