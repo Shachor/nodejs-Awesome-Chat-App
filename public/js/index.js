@@ -23,25 +23,45 @@ socket.on('disconnect', function() {  // Fires off anytime the server goes down
 // CLIENT LISTENERS
 //=============================================================================
 socket.on('newMessage', function(message) {
-   var formattedTime = moment(message.createdAt).format('h:mm a');
-   // We will populate the list items in our <ol> through jQuery
-   var li = jQuery('<li></li>');    // creates the li element in the variable
-   li.text(`${message.from} ${formattedTime}: ${message.text}`);    // sets up the format of the message
+   var createdAt = moment(message.createdAt).format('h:mm a');
+   var template = jQuery('#message-template').html();    // This will return the markup within #message-template
+   var html = Mustache.render(template, {    //takes the markup and renders it into a moustache template
+      from: message.from,
+      text: message.text,
+      createdAt
+   });
+   jQuery('#messages').append(html);   // Appends the template to the messages list
 
-   jQuery('#messages').append(li);  // appends a new message to the end of the list as new <li>
+   //OLD AND BUSTED way of pushing out html - through jQuery manipulation
+   // var formattedTime = moment(message.createdAt).format('h:mm a');
+   // // We will populate the list items in our <ol> through jQuery
+   // var li = jQuery('<li></li>');    // creates the li element in the variable
+   // li.text(`${message.from} ${formattedTime}: ${message.text}`);    // sets up the format of the message
+   //
+   // jQuery('#messages').append(li);  // appends a new message to the end of the list as new <li>
 });
+
 
 // CLIENT LISTENER FOR GEOLOCATION MESSAGES
 // The reason we use separate vars instead of template strings is to prevent malicious code from executing
 socket.on('newLocationMessage', function(message) {
-   var formattedTime = moment(message.createdAt).format('h:mm a');
-   var li = jQuery('<li></li>');
-   var a = jQuery('<a target="_blank">My Current Location</a>');  //target="_blank" opens a new window
+   var createdAt = moment(message.createdAt).format('h:mm a');
+   var template = jQuery('#location-message-template').html();
+   var html = Mustache.render(template, {
+      from: message.from,
+      url: message.url,
+      createdAt
+   });
+   jQuery('#messages').append(html);
 
-   li.text(`${message.from} ${formattedTime}: `);
-   a.attr('href', message.url);  //.attr() - one arg means GET, two args is NAME of attr and SET attr
-   li.append(a);     // after we set the <a> attribute, we send it to the <li>
-   jQuery('#messages').append(li);     // now we send the <li> to the screen
+   // var formattedTime = moment(message.createdAt).format('h:mm a');
+   // var li = jQuery('<li></li>');
+   // var a = jQuery('<a target="_blank">My Current Location</a>');  //target="_blank" opens a new window
+   //
+   // li.text(`${message.from} ${formattedTime}: `);
+   // a.attr('href', message.url);  //.attr() - one arg means GET, two args is NAME of attr and SET attr
+   // li.append(a);     // after we set the <a> attribute, we send it to the <li>
+   // jQuery('#messages').append(li);     // now we send the <li> to the screen
 });
 
 

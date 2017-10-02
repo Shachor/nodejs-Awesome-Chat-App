@@ -28,11 +28,46 @@
       </div>
 
 
+      <!-- =============================================================== -->
+      <!-- MUSTACHE TEMPLATE for MESSAGE BLOCK                             -->
+      <!-- =============================================================== -->
+      <!-- This whole code block can be reusable -->
+      <script type="text/template" id="message-template">
+         <li class="message">
+            <div class="message__title">
+               <h4>{{from}}</h4>
+               <span>{{createdAt}}</span>
+            </div>
+            <div>
+               <p>{{text}}</p>
+            </div>
+         </li>
+      </script>
+      <!-- =============================================================== -->
 
+      <!-- =============================================================== -->
+      <!-- MUSTACHE TEMPLATE for LOCATION BLOCK                             -->
+      <!-- =============================================================== -->
+      <!-- This whole code block can be reusable -->
+      <script type="text/template" id="location-message-template">
+         <li class="message">
+            <div class="message__title">
+               <h4>{{from}}</h4>
+               <span>{{createdAt}}</span>
+            </div>
+            <div>
+               <p>
+                  <a href="{{url}}" target="_blank">My Current Location</a>
+               </p>
+            </div>
+         </li>
+      </script>
+      <!-- =============================================================== -->
 
       <script type="text/javascript" src="/socket.io/socket.io.js"></script>
       <script type="text/javascript" src="/js/libs/jquery-3.2.1.js"></script>
       <script type="text/javascript" src="/js/libs/moment.js"></script>
+      <script type="text/javascript" src="/js/libs/mustache.js"></script>
       <script type="text/javascript" src="/js/index.js"></script>
 
    </body>
