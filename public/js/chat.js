@@ -55,13 +55,13 @@ socket.on('disconnect', function() {  // Fires off anytime the server goes down
 // CLIENT LISTENERS
 //=============================================================================
 socket.on('updateUserList', function (users) {
-   var ol = jQuery('<ol></ol>');
+   var ul = jQuery('<ul></ul>');
 
    users.forEach(function(user) {
-      ol.append(jQuery('<li></li>').text(user));
+      ul.append(jQuery('<li></li>').text(user));
    });
 
-   jQuery('#users').html(ol);
+   jQuery('#users').html(ul);
 });
 
 

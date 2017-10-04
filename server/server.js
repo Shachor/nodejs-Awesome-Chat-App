@@ -79,9 +79,11 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
 
    // This will receive a user message and rebroadcast it to all users
    socket.on('createMessage', (message, callback) => {
-      console.log('New Message:', message);
-      io.emit('newMessage', generateMessage(message.from, message.text));
-
+      // console.log('New Message:', message);
+      var user = users.getUser(socket.id);
+      if (user && isRealString(message.text)) {    // check if actual user and string is valid, then send message
+         io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+      }
       // This callback sends a response back to the emitter who called createMessage (Message received)
       // We can send data back to the emitter in the callback
       callback();
@@ -108,7 +110,10 @@ io.on('connection', (socket) => {      // Fires off anytime a web browser connec
 
    // This recieves a users location data and rebroadcasts it to everyone else
    socket.on('createLocationMessage', (coords) => {
-      io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+      var user = users.getUser(socket.id);
+      if (user) {    // check if actual user and string is valid, then send message
+         io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+      }
    });
    //=============================================================================
 
