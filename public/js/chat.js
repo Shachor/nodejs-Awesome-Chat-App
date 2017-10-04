@@ -33,6 +33,16 @@ function scrollToBottom () {
 //=============================================================================
 socket.on('connect', function() {     // Will fire off anytime we crete a connection to the server
    console.log('Connected to Server.');   // This logs to the client console
+   var params = jQuery.deparam(window.location.search);
+
+   socket.emit('join', params, function(err) {
+      if (err) {
+         alert(err);       // Send the user the error from servers join
+         window.location.href = '/';   // On error redirects to index
+      } else {
+         console.log('No Error, join successful');
+      }
+   });
 });
 
 socket.on('disconnect', function() {  // Fires off anytime the server goes down
@@ -44,6 +54,17 @@ socket.on('disconnect', function() {  // Fires off anytime the server goes down
 //=============================================================================
 // CLIENT LISTENERS
 //=============================================================================
+socket.on('updateUserList', function (users) {
+   var ol = jQuery('<ol></ol>');
+
+   users.forEach(function(user) {
+      ol.append(jQuery('<li></li>').text(user));
+   });
+
+   jQuery('#users').html(ol);
+});
+
+
 socket.on('newMessage', function(message) {
    var createdAt = moment(message.createdAt).format('h:mm a');
    var template = jQuery('#message-template').html();    // This will return the markup within #message-template
